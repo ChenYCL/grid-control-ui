@@ -7,3 +7,13 @@ export const client = new RealDBSyncClient({
     realDB: server__newRealDB(),
     funcList: server__funcList,
 })
+
+
+// 函数调用
+// client.func.xxxx
+
+// 数据
+// client.realDB.mutableData
+
+// 刷新界面
+// client.onData.subscribe(刷新界面func)
