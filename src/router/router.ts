@@ -5,6 +5,7 @@ import generatedRoutes from 'virtual:generated-pages'
 const routes = setupLayouts(generatedRoutes)
 
 const router = createRouter({
+  // @ts-expect-error
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   scrollBehavior: (to) => {
@@ -15,6 +16,7 @@ const router = createRouter({
     return { left: 0, top: 0 }
   },
 })
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 router.beforeEach((to, from) => {
   const isLogin = localStorage.getItem('isLogin')
   console.log('isLogin', isLogin)
