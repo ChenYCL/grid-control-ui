@@ -1,5 +1,6 @@
 import { waitFor } from "../_____lib/func/waitFor";
-import { XXX_state, ___grid, SYMBOL, orderBook, XXX_setFunc, XXX_http } from "./BinanceXXX";
+import { XXX_state, SYMBOL, orderBook, XXX_setFunc, XXX_http } from "./BinanceXXX";
+import { grid_to_sync_list } from "./grid_to_sync_list";
 
 export async function grid_task() {
     while (true) {
@@ -8,7 +9,7 @@ export async function grid_task() {
             continue;
         }
 
-        const { low, high, list } = ___grid({
+        const { low, high, list } = grid_to_sync_list({
             a: XXX_state.task参数.价位A,
             b: XXX_state.task参数.价位B,
             count: XXX_state.task参数.上下几格,
