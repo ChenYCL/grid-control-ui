@@ -33,6 +33,7 @@
 
 <script lang="ts" setup>
 import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 import { error } from '@/components/common/NotificationPlugin'
 
 const model = reactive({
@@ -40,8 +41,16 @@ const model = reactive({
   password: '',
 })
 
+const router = useRouter()
+
 function onSubmit() {
-  error('Login not implemented yet')
+  // error('Login not implemented yet')
+  if (model.email && model.password) {
+    localStorage.setItem('email', model.email)
+    localStorage.setItem('password', model.password)
+    localStorage.setItem('isLogin', 'yes')
+    router.push('/home')
+  }
 }
 </script>
 

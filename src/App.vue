@@ -2,7 +2,7 @@
   <router-view />
 </template>
 
-<script lang="ts">
+<script lang='ts'>
 import { defineComponent } from 'vue'
 import { DEFAULT_APP_TITLE } from '@/modules/common/config'
 
