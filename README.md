@@ -36,3 +36,8 @@ You can check how it's done in `src/plugins/globalComponents.ts`
   - `this.$formatDate(date, format)` can be used to format dates
   - `this.$success(message)` or `this.$error(message)` can be used to trigger notifications across the app both in components and code.
 
+
+# TODO
+- [ ] 登录
+- [ ] 下单
+- [ ] 收益
