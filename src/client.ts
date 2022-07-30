@@ -6,4 +6,4 @@ export const client = new RealDBSyncClient({
     url: `ws://127.0.0.1:6061/vFSDGwsdftgqfvasd23`,
     realDB: server__newRealDB(),
     funcList: server__funcList,
-})  
+})
