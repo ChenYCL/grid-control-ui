@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
+    "server": "ts-node src/_____server",
     "build": "vue-tsc --noEmit && vite build",
     "typecheck": "vue-tsc --noEmit --skipLibCheck",
     "serve": "vite preview",
@@ -17,12 +18,15 @@
     "@zhuowenli/vue-feather-icons": "^5.0.2",
     "axios": "^0.24.0",
     "date-fns": "^2.28.0",
+    "json-bigint": "^1.0.0",
     "lodash-es": "^4.17.21",
     "pinia": "^2.0.14",
+    "ramda": "^0.28.0",
     "vee-validate": "^4.5.11",
     "vue": "^3.2.35",
     "vue-i18n": "^9.2.0-beta.17",
-    "vue-router": "^4.0.15"
+    "vue-router": "^4.0.15",
+    "ws": "^8.8.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.25.2",
@@ -30,6 +34,8 @@
     "@tailwindcss/typography": "^0.5.2",
     "@types/lodash-es": "^4.17.5",
     "@types/node": "^16.11.7",
+    "@types/ramda": "^0.28.15",
+    "@types/ws": "^8.5.3",
     "@vitejs/plugin-vue": "^1.10.2",
     "autoprefixer": "^10.4.7",
     "eslint": "^8.19.0",
@@ -38,6 +44,7 @@
     "sass": "^1.52.1",
     "sass-loader": "^12.6.0",
     "tailwindcss": "^3.1.4",
+    "ts-node": "^10.9.1",
     "typescript": "^4.4.3",
     "unplugin-vue-components": "^0.19.5",
     "vite": "^2.6.4",
