@@ -15,5 +15,19 @@ const router = createRouter({
     return { left: 0, top: 0 }
   },
 })
+router.beforeEach((to, from) => {
+  const isLogin = localStorage.getItem('isLogin')
+  console.log('isLogin', isLogin)
+  if (isLogin === 'yes') {
+    return true
+  } else {
+    if (to.path === '/login') {
+      return true
+    } else {
+      router.push('/login')
+      return false
+    }
+  }
+})
 
 export default router

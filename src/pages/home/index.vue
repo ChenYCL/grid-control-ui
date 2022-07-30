@@ -231,7 +231,7 @@ import { reactive, ref } from 'vue'
 import { RealDBSyncClient } from '@/_____lib/RealDB/RealDBSyncClient'
 import { server__funcList } from '@/_____server/server__funcList'
 import { server__newRealDB } from '@/_____server/server__newRealDB'
-import { error } from '@/components/common/NotificationPlugin'
+import { error, success } from '@/components/common/NotificationPlugin'
 
 export interface res {
   [symbol: string]: {
@@ -293,6 +293,7 @@ const add = () => {
       },
     })
     toggle(false)
+    success(`${params.symbol} 已添加`)
     location.reload()
   } else {
     error('请填写完整')
@@ -301,6 +302,7 @@ const add = () => {
 
 const stop = (symbol: string) => {
   console.log(`关闭${symbol}`)
+  success(`关闭${symbol}`)
   client.func.stop({
     symbol,
   })
@@ -309,6 +311,7 @@ const stop = (symbol: string) => {
 
 const start = (symbol: string) => {
   console.log(`开启${symbol}`)
+  success(`开启${symbol}`)
   client.func.start({
     symbol,
   })
