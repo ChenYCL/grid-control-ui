@@ -5,6 +5,7 @@ import { safeJSONParse } from "../_____lib/func/safeJSONParse"
 import { WebSocketClientNew } from "../_____lib/http_ws/WebSocketClient"
 import { CONST } from "./CONST"
 import { grid_task } from "./grid_task"
+import fetch from 'node-fetch';
 
 const httpRequest = async <T>({
     method = 'GET',
