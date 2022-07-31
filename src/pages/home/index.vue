@@ -257,15 +257,22 @@ const params = reactive({
   dx: 0,
 })
 const client = new RealDBSyncClient({
-  url: 'ws://127.0.0.1:6061',
+  url: 'ws://127.0.0.1:6061/vFSDGwsdftgqfvasd23',
+  // url: 'ws://127.0.0.1',
+
   realDB: server__newRealDB(),
   funcList: server__funcList,
 })
 
-console.log(client, client.realDB.mutableData.dic)
+// console.log(client, client.realDB.mutableData.dic)
 
 // set value
 data = { ...data, ...client.realDB.mutableData.dic }
+
+client.onData.subscribe((d) => {
+  console.log(d)
+  data = { ...data, ...d }
+})
 
 const toggle = (bool: boolean) => {
   visible.value = bool
