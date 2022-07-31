@@ -8,6 +8,8 @@ export const client = new RealDBSyncClient({
     funcList: server__funcList,
 })
 
+const w = window as any
+w.client = client
 
 // 函数调用
 // client.func.xxxx
