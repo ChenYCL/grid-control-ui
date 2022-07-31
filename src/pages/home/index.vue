@@ -232,7 +232,7 @@ const params = reactive({
 })
 const pwd = localStorage.getItem('password')
 const client = new RealDBSyncClient({
-  url: `ws://127.0.0.1:6061/${pwd}`,
+  url: `ws://${location.hostname}:6061/${pwd}`,
   // url: 'ws://127.0.0.1',
 
   realDB: server__newRealDB(),

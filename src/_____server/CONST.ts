@@ -1,5 +1,5 @@
 export const CONST = {
-    binanceAPIKey: '',
-    binanceSecretKey: '',
-    简易密码: 'vFSDGwsdftgqfvasd23',
+  binanceAPIKey: '' || localStorage.getItem('apikey'),
+  binanceSecretKey: '' || localStorage.getItem('secretKey'),
+  简易密码: 'vFSDGwsdftgqfvasd23',
 }
