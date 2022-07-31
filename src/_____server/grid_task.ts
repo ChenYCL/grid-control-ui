@@ -1,5 +1,6 @@
 import { waitFor } from "../_____lib/func/waitFor";
 import { XXX_state, SYMBOL, orderBook, XXX_setFunc, XXX_http } from "./BinanceXXX";
+import { server } from "./server";
 
 function grid_to_sync_list({
     a, b, count, dx,
@@ -9,6 +10,8 @@ function grid_to_sync_list({
     count: number;
     dx: number;
 }) {
+    const task参数 = server.realDB.mutableData.dic['BTCBUSD'].参数
+
     const arr: {
         price: number;
         SL: number;
@@ -33,7 +36,7 @@ function grid_to_sync_list({
             SL: low,
             TP: low_i + one - dx,
             orderType: 'Buy Limit',
-            仓位: XXX_state.task参数.size * (i + 1),
+            仓位: task参数.size * (i + 1),
         });
 
 
@@ -42,7 +45,7 @@ function grid_to_sync_list({
             SL: high,
             TP: high_i - one + dx,
             orderType: 'Sell Limit',
-            仓位: -XXX_state.task参数.size * (i + 1),
+            仓位: -task参数.size * (i + 1),
         });
     }
 
@@ -64,16 +67,19 @@ function grid_to_sync_list({
 
 export async function grid_task() {
     while (true) {
-        if (XXX_state.task参数.价位A === 0) {
+        const 运行中 = server.realDB.mutableData.dic['BTCBUSD'].运行中
+        if (运行中 === false) {
             await waitFor(100);
             continue;
         }
 
+
+        const task参数 = server.realDB.mutableData.dic['BTCBUSD'].参数
         const { low, high, list } = grid_to_sync_list({
-            a: XXX_state.task参数.价位A,
-            b: XXX_state.task参数.价位B,
-            count: XXX_state.task参数.上下几格,
-            dx: XXX_state.task参数.点差,
+            a: task参数.a,
+            b: task参数.b,
+            count: task参数.count,
+            dx: task参数.dx,
         });
 
         const order = Object.values(XXX_state.orderDic[SYMBOL] || {});
@@ -82,7 +88,7 @@ export async function grid_task() {
 
         if (buy1 !== 0 && sell1 !== 0) {
             if (sell1 < low || buy1 > high) {
-                XXX_state.task参数.价位A = 0;
+                task参数.a = 0;
                 XXX_setFunc.onEnd();
                 return;
             }
@@ -126,7 +132,7 @@ export async function grid_task() {
                         isBuy,
                         平仓: is减仓,
                         price,
-                        size: XXX_state.task参数.size,
+                        size: task参数.size,
                     });
                 }
             }

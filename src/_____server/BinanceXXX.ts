@@ -5,7 +5,7 @@ import { WebSocketClientNew } from "../_____lib/http_ws/WebSocketClient"
 import { CONST } from "./CONST"
 import { server } from "./server"
 import { httpRequest } from "../_____lib/nodejs_lib/httpRequest"
- 
+
 
 type OrderStatus = 'NEW' | 'CANCELED' | 'PARTIALLY_FILLED' | 'FILLED'
 
@@ -34,13 +34,6 @@ type OrderType = {
 
 
 export const XXX_state = {
-    task参数: {
-        价位A: 0,
-        价位B: 0,
-        上下几格: 0,
-        点差: 0,
-        size: 0,
-    },
     positionDic: {} as {
         [symbol: string]: {
             price: number;
