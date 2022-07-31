@@ -20,7 +20,7 @@ export const httpRequest = <T>({
         body: body === undefined ? undefined : JSON.stringify(body),
         // agent: getAgentWithURL(url),
     }, (_, response) => {
-        if (response.statusCode >= 200 && response.statusCode < 400 && response !== undefined) {
+        if (response !== undefined && response.statusCode >= 200 && response.statusCode < 400) {
             resolve(safeJSONParse(String(response.body)))
         } else {
             // console.log(
