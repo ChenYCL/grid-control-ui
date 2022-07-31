@@ -1,4 +1,4 @@
-import * as WebSocket from 'ws'
+import WebSocket from 'ws'
 import { safeJSONParse } from '../func/safeJSONParse'
 
 // const pingTimeout = 10 * 1000 //ws10秒超时

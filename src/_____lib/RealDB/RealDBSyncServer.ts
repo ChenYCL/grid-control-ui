@@ -1,5 +1,5 @@
 import { RealDB } from './RealDB'
-import * as WebSocket from 'ws'
+import WebSocket from 'ws'
 import { toType } from '../func/toType'
 import { safeJSONParse } from '../func/safeJSONParse'
 import { safeFS } from '../nodejs_lib/safeFS'
