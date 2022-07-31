@@ -28,7 +28,7 @@ const httpRequest = async <T>({
     if (res.status >= 200 && res.status < 400) {
         return safeJSONParse(await (res.text()))
     } else {
-        XXX_setFunc.log(res.status + '', {
+        console.log(res.status + '', {
             url,
             body: await (res.text()),
         })
@@ -85,8 +85,6 @@ export const XXX_state = {
 }
 
 export const XXX_setFunc = {
-    log: (k: string, v: any) => { console.log(k, v) },
-    refresh横线UI: () => { },
     onEnd: () => { },
 }
 
@@ -398,26 +396,24 @@ export const XXX_http = {
 
 const init = async () => {
     let 余额和仓位 = await XXX_http.余额和仓位({})
-    XXX_setFunc.log('余额和仓位', 余额和仓位)
+    console.log('余额和仓位', 余额和仓位)
     if (余额和仓位 === undefined) {
-        XXX_setFunc.log('余额和仓位 加载 错误', 余额和仓位)
+        console.log('余额和仓位 加载 错误', 余额和仓位)
         return
     }
     server.realDB.__(v => v.BUSD).set(余额和仓位.BUSD)
     XXX_state.positionDic = 余额和仓位.positionDic
-    XXX_setFunc.refresh横线UI()
 
     let orderList = await XXX_http.get_order_list({})
     if (orderList === undefined) {
-        XXX_setFunc.log('orderList 加载 错误', orderList)
+        console.log('orderList 加载 错误', orderList)
         return
     }
     XXX_state.orderDic = orderList
-    XXX_setFunc.refresh横线UI()
 
     let listenKey = await XXX_http.listenKey({})
     if (listenKey === undefined) {
-        XXX_setFunc.log('listenKey 加载 错误', listenKey)
+        console.log('listenKey 加载 错误', listenKey)
         return
     }
 
@@ -520,7 +516,7 @@ const init = async () => {
                     size,
                 }
             }
-            XXX_setFunc.refresh横线UI()
+
         }
         else if (eventName === 'ACCOUNT_UPDATE') {
             const sample = {
@@ -586,7 +582,7 @@ const init = async () => {
                     }
                 }
             })
-            XXX_setFunc.refresh横线UI()
+
         }
     }
 }
