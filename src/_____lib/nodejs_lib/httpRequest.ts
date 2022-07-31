@@ -1,4 +1,4 @@
-import request from 'request'
+import * as request from 'request'
 import { safeJSONParse } from "../func/safeJSONParse"
 
 export const httpRequest = <T>({
