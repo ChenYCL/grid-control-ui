@@ -7,9 +7,9 @@ export const server__newRealDB = () => new RealDB({
         BTCBUSD: {
             运行中: false,
             参数: {
-                a: 25000,
-                b: 35000,
-                count: 5,
+                a: 20000,
+                b: 30000,
+                count: 2,
                 size: 0.001,
                 dx: 15,
             }

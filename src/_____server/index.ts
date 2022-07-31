@@ -17,12 +17,14 @@ server.func.set = req => {
 
 server.func.start = req => {
     if (symbol有(req.symbol)) {
+        console.log('开启', req.symbol)
         server.realDB.__(v => v.dic[req.symbol].运行中).set(true)
     }
 }
 
 server.func.stop = req => {
     if (symbol有(req.symbol)) {
+        console.log('停止', req.symbol)
         server.realDB.__(v => v.dic[req.symbol].运行中).set(false)
     }
 }
