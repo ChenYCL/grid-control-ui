@@ -218,8 +218,9 @@ client.onData.subscribe(() => {
     ...data,
     ...client.realDB.mutableData.dic,//!!!!!!!!!!!!!!
   }
-  console.log('__data__', JSON.stringify(data))
-})
+  console.log('__data__', JSON.stringify(data)) //data改不了？？？
+  console.log('time', client.realDB.mutableData.time)
+}) 
 
 const toggle = (bool: boolean) => {
   visible.value = bool
