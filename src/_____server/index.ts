@@ -1,14 +1,7 @@
-import { RealDBSyncServer } from "../_____lib/RealDB/RealDBSyncServer";
-import { server__newRealDB } from "./server__newRealDB";
-import { server__funcList } from "./server__funcList";
-import { CONST } from "./CONST";
+import { grid_task } from "./grid_task"
+import { server } from "./server"
 
-export const server = new RealDBSyncServer({
-    realDB: server__newRealDB(),
-    funcList: server__funcList,
-    path: '/' + CONST.简易密码,
-    port: 6061,
-})
+grid_task()
 
 setInterval(() => {
     server.realDB.__(v => v.time).set(new Date().toLocaleString())

@@ -6,6 +6,7 @@ import { WebSocketClientNew } from "../_____lib/http_ws/WebSocketClient"
 import { CONST } from "./CONST"
 import { grid_task } from "./grid_task"
 import fetch from 'node-fetch';
+import { server } from "./server"
 
 const httpRequest = async <T>({
     method = 'GET',
@@ -61,10 +62,31 @@ type OrderType = {
     size: number
 }
 
+
+export const XXX_state = {
+    task参数: {
+        价位A: 0,
+        价位B: 0,
+        上下几格: 0,
+        点差: 0,
+        size: 0,
+    },
+    positionDic: {} as {
+        [symbol: string]: {
+            price: number;
+            size: number;
+        };
+    },
+    orderDic: {} as {
+        [symbol: string]: {
+            [orderID: string]: OrderType
+        };
+    },
+}
+
 export const XXX_setFunc = {
     log: (k: string, v: any) => { console.log(k, v) },
     refresh横线UI: () => { },
-    USD: (n: number) => { },
     onEnd: () => { },
 }
 
@@ -367,28 +389,6 @@ export const XXX_http = {
 }
 
 
-export const XXX_state = {
-    task参数: {
-        价位A: 0,
-        价位B: 0,
-        上下几格: 0,
-        点差: 0,
-        size: 0,
-    },
-    USD: 0,
-    positionDic: {} as {
-        [symbol: string]: {
-            price: number;
-            size: number;
-        };
-    },
-    orderDic: {} as {
-        [symbol: string]: {
-            [orderID: string]: OrderType
-        };
-    },
-}
-
 
 
 
@@ -403,7 +403,7 @@ const init = async () => {
         XXX_setFunc.log('余额和仓位 加载 错误', 余额和仓位)
         return
     }
-    XXX_state.USD = 余额和仓位.BUSD
+    server.realDB.__(v => v.BUSD).set(余额和仓位.BUSD)
     XXX_state.positionDic = 余额和仓位.positionDic
     XXX_setFunc.refresh横线UI()
 
@@ -577,8 +577,7 @@ const init = async () => {
                 }
             }
             const { a } = toType(sample)(v)
-            XXX_state.USD = Number(a.B.find(v => v.a === 'BUSD')?.cw || 0)
-            XXX_setFunc.USD(XXX_state.USD)
+            server.realDB.__(v => v.BUSD).set(Number(a.B.find(v => v.a === 'BUSD')?.cw || 0))
             a.P.forEach(v => {
                 if (v.ps === 'BOTH') {
                     XXX_state.positionDic[v.s] = {
@@ -590,8 +589,6 @@ const init = async () => {
             XXX_setFunc.refresh横线UI()
         }
     }
-
-    XXX_setFunc.USD(XXX_state.USD)
 }
 
 init()
@@ -627,8 +624,4 @@ publicWS.onRecvJSON = p => {
         const sell1 = Number(data.a[0][0])
         orderBook = { buy1, sell1 }
     }
-}
-
-
-
-grid_task()
+} 

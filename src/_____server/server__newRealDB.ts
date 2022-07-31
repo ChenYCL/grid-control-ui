@@ -2,6 +2,7 @@ import { RealDB } from "../_____lib/RealDB/RealDB";
 
 export const server__newRealDB = () => new RealDB({
     time: '--',
+    BUSD: 0,
     dic: {
         BTCBUSD: {
             运行中: false,
