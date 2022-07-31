@@ -1,4 +1,4 @@
-import { RealDBSyncServer } from "@/_____lib/RealDB/RealDBSyncServer";
+import { RealDBSyncServer } from "../_____lib/RealDB/RealDBSyncServer";
 import { CONST } from "./CONST";
 import { server__funcList } from "./server__funcList";
 import { server__newRealDB } from "./server__newRealDB";

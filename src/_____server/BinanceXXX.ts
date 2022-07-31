@@ -1,41 +1,11 @@
 import { sha256_hmac } from "../_____lib/func/sha256_hmac"
 import { queryString } from "../_____lib/func/queryString"
 import { toType } from "../_____lib/func/toType"
-import { safeJSONParse } from "../_____lib/func/safeJSONParse"
 import { WebSocketClientNew } from "../_____lib/http_ws/WebSocketClient"
 import { CONST } from "./CONST"
-import { grid_task } from "./grid_task"
-import fetch from 'node-fetch';
 import { server } from "./server"
-
-const httpRequest = async <T>({
-    method = 'GET',
-    url,
-    body = undefined,
-    headers = {},
-}: {
-    method?: string
-    url: string
-    body?: any
-    headers?: { [key: string]: string }
-}) => {
-    const res = await fetch(url, {
-        method,
-        headers,
-        body: body === undefined ? undefined : JSON.stringify(body),
-    })
-
-    if (res.status >= 200 && res.status < 400) {
-        return safeJSONParse(await (res.text()))
-    } else {
-        console.log(res.status + '', {
-            url,
-            body: await (res.text()),
-        })
-        return undefined
-    }
-
-}
+import { httpRequest } from "../_____lib/nodejs_lib/httpRequest"
+ 
 
 type OrderStatus = 'NEW' | 'CANCELED' | 'PARTIALLY_FILLED' | 'FILLED'
 

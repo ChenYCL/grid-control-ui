@@ -1,6 +1,5 @@
-import * as WebSocket from 'ws'
+import WebSocket from 'ws'
 import { safeJSONParse } from '../func/safeJSONParse'
-import { getAgentWithURL } from '../nodejs_lib/getAgentWithURL'
 
 // const pingTimeout = 10 * 1000 //ws10秒超时
 
@@ -31,8 +30,6 @@ export class WebSocketClientNodejs {
         if (p.headers !== undefined) {
             options.headers = p.headers
         }
-
-        options.agent = getAgentWithURL(p.url)
 
         this.createWS = () => new WebSocket(p.url, options)
         this.connect()
