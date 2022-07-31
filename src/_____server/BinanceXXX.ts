@@ -83,7 +83,10 @@ const ______ = <REQ, RES, A, B>(p: {
     })
 
     const bbb = queryString.stringify({
-        signature: sha256_hmac({ key: XXX_state.binanceSecretKey, text: aaa }),
+        signature: sha256_hmac({
+            key: CONST.binanceSecretKey,
+            text: aaa
+        }),
     })
 
     const query = aaa + '&' + bbb
@@ -94,7 +97,7 @@ const ______ = <REQ, RES, A, B>(p: {
         method: p.method,
         url,
         headers: {
-            'X-MBX-APIKEY': XXX_state.binanceAPIKey,
+            'X-MBX-APIKEY': CONST.binanceAPIKey,
         },
     })
 
@@ -365,8 +368,6 @@ export const XXX_http = {
 
 
 export const XXX_state = {
-    binanceAPIKey: CONST.binanceAPIKey,
-    binanceSecretKey: CONST.binanceSecretKey,
     task参数: {
         价位A: 0,
         价位B: 0,
@@ -375,14 +376,12 @@ export const XXX_state = {
         size: 0,
     },
     USD: 0,
-
     positionDic: {} as {
         [symbol: string]: {
             price: number;
             size: number;
         };
     },
-
     orderDic: {} as {
         [symbol: string]: {
             [orderID: string]: OrderType

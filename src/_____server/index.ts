@@ -10,6 +10,10 @@ export const server = new RealDBSyncServer({
     port: 6061,
 })
 
+setInterval(() => {
+    server.realDB.__(v => v.time).set(new Date().toLocaleString())
+}, 500)
+
 const symbol有 = (symbol: string) => symbol === 'BTCBUSD'
 
 server.func.set = req => {
