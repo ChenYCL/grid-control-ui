@@ -66,8 +66,6 @@ export const XXX_setFunc = {
     refresh横线UI: () => { },
     USD: (n: number) => { },
     onEnd: () => { },
-    public_debug: (obj: any) => { },
-    private_debug: (obj: any) => { },
 }
 
 
@@ -592,73 +590,12 @@ const init = async () => {
             })
             XXX_setFunc.refresh横线UI()
         }
-
-        XXX_setFunc.private_debug(v)
     }
 
     XXX_setFunc.USD(XXX_state.USD)
 }
 
 init()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 export const SYMBOL = 'BTCBUSD'
 
@@ -690,7 +627,6 @@ publicWS.onRecvJSON = p => {
         const buy1 = Number(data.b[0][0])
         const sell1 = Number(data.a[0][0])
         orderBook = { buy1, sell1 }
-        XXX_setFunc.public_debug({ buy1, sell1 })
     }
 }
 
