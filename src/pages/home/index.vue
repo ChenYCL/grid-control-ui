@@ -4,7 +4,7 @@
       <div class="py-8">
         <div class="flow-root">
           <h2 class="text-2xl font-semibold leading-tight float-left">
-            数据  {{ data.time }}
+            数据  {{ data.time }} 余额 {{data.BUSD}}
           </h2>
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full  font-semibold float-right "
@@ -56,6 +56,16 @@
                   <th
                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider"
                   >
+                    委托
+                  </th>
+                  <th
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                  >
+                    仓位
+                  </th>
+                  <th
+                    class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                  >
                     Option/操作
                   </th>
                 </tr>
@@ -79,6 +89,12 @@
                   </td>
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
                     {{ value['参数'].size }}
+                  </td>
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
+                    {{ JSON.stringify(value['委托']) }}
+                  </td>
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
+                    {{ JSON.stringify(value['仓位']) }}
                   </td>
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-center  text-sm">
                     <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
@@ -220,6 +236,7 @@ export interface res {
 const data = reactive({
   list: {},
   time: '00:00:00',
+  BUSD:0
 })
 const visible = ref<boolean>(false)
 const params = reactive({
@@ -249,6 +266,7 @@ client.onData.subscribe(() => {
   console.log('time', client.realDB.mutableData.time)
   data.list = { ...data.list, ...client.realDB.mutableData.dic }
   data.time = client.realDB.mutableData.time
+  data.BUSD = client.realDB.mutableData.BUSD
 })
 
 const toggle = (bool: boolean) => {
