@@ -5,6 +5,11 @@ export const server__newRealDB = () => new RealDB({
     BUSD: 0,
     dic: {
         BTCBUSD: {
+            委托: [],
+            仓位: {
+                size: 0,
+                price: 0,
+            },
             运行中: false,
             参数: {
                 a: 20000,
@@ -16,6 +21,14 @@ export const server__newRealDB = () => new RealDB({
         }
     } as {
         [symbol: string]: {
+            委托: {
+                size: number
+                price: number
+            }[],
+            仓位: {
+                size: number
+                price: number
+            },
             运行中: boolean
             参数: {
                 a: number

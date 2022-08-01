@@ -13,7 +13,7 @@ type OrderType = {
   status: OrderStatus
   price: number
 }
-|
+  |
 {
   type: '突破'
   isBuy: boolean
@@ -44,9 +44,30 @@ export const XXX_state = {
   },
 }
 
-export const XXX_setFunc = {
-  onEnd: () => { },
+const 刷新仓位和委托 = () => {
+  server.realDB.__(v => v.dic['BTCBUSD'].仓位).set({
+    price: XXX_state.positionDic['BTCBUSD']?.price || 0,
+    size: XXX_state.positionDic['BTCBUSD']?.size || 0,
+  })
+
+  const arr = Object.values(XXX_state.orderDic['BTCBUSD'] || {}).filter(v => v.type === 'LIMIT')
+    .map(v => {
+      if (v.type === 'LIMIT') {
+        return {
+          price: v.price,
+          size: v.isBuy ? v.size : -v.size,
+        }
+      } else {
+        return {
+          price: 0,
+          size: 0,
+        }
+      }
+    })
+
+  server.realDB.__(v => v.dic['BTCBUSD'].委托).set(arr)
 }
+
 
 const ______ = <REQ, RES, A, B>(p: {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE'
@@ -54,33 +75,33 @@ const ______ = <REQ, RES, A, B>(p: {
   mapReqFunc: (v: A) => REQ
   mapResFunc: (v: RES) => B
 }) => async (a: A) => {
-    const aaa = queryString.stringify({
-      ...p.mapReqFunc(a),
-      timestamp: Date.now() - 1000 * 60,
-      recvWindow: 1000 * 60 * 5,
-    })
+  const aaa = queryString.stringify({
+    ...p.mapReqFunc(a),
+    timestamp: Date.now() - 1000 * 60,
+    recvWindow: 1000 * 60 * 5,
+  })
 
-    const bbb = queryString.stringify({
-      signature: sha256_hmac({
-        key: CONST.binanceSecretKey,
-        text: aaa,
-      }),
-    })
+  const bbb = queryString.stringify({
+    signature: sha256_hmac({
+      key: CONST.binanceSecretKey,
+      text: aaa,
+    }),
+  })
 
-    const query = `${aaa}&${bbb}`
+  const query = `${aaa}&${bbb}`
 
-    const url = `https://fapi.binance.com/fapi/v1/${p.path}?${query}`
+  const url = `https://fapi.binance.com/fapi/v1/${p.path}?${query}`
 
-    const res = await httpRequest<RES>({
-      method: p.method,
-      url,
-      headers: {
-        'X-MBX-APIKEY': CONST.binanceAPIKey,
-      },
-    })
+  const res = await httpRequest<RES>({
+    method: p.method,
+    url,
+    headers: {
+      'X-MBX-APIKEY': CONST.binanceAPIKey,
+    },
+  })
 
-    return res !== undefined ? p.mapResFunc(res) : undefined
-  }
+  return res !== undefined ? p.mapResFunc(res) : undefined
+}
 
 export const XXX_http = {
   new_order: ______({
@@ -101,16 +122,16 @@ export const XXX_http = {
 
       return (v.price === 'market'
         ? {
-            ...obj,
-            type: 'MARKET',
-          }
+          ...obj,
+          type: 'MARKET',
+        }
         : {
-            ...obj,
-            reduceOnly: v.平仓,
-            type: 'LIMIT',
-            price: v.price,
-            timeInForce: 'GTC',
-          })
+          ...obj,
+          reduceOnly: v.平仓,
+          type: 'LIMIT',
+          price: v.price,
+          timeInForce: 'GTC',
+        })
     },
     mapResFunc: () => ({}),
   }),
@@ -358,6 +379,7 @@ const init = async () => {
     return
   }
   XXX_state.orderDic = orderList
+  刷新仓位和委托()
 
   const listenKey = await XXX_http.listenKey({})
   if (listenKey === undefined) {
@@ -463,59 +485,61 @@ const init = async () => {
           size,
         }
       }
+
+      刷新仓位和委托()
     } else if (eventName === 'ACCOUNT_UPDATE') {
       const sample = {
         e: 'ACCOUNT_UPDATE', // 事件类型
         E: 1564745798939, // 事件时间
         T: 1564745798938, // 撮合时间
         a: // 账户更新事件
-                {
-                  m: 'ORDER', // 事件推出原因
-                  B: [ // 余额信息
-                    {
-                      a: 'USDT', // 资产名称
-                      wb: '122624.12345678', // 钱包余额
-                      cw: '100.12345678', // 除去逐仓仓位保证金的钱包余额
-                    },
-                    {
-                      a: 'BNB',
-                      wb: '1.00000000',
-                      cw: '0.00000000',
-                    },
-                  ],
-                  P: [
-                    {
-                      s: 'BTCUSDT', // 交易对
-                      pa: '0', // 仓位
-                      ep: '0.00000', // 入仓价格
-                      cr: '200', // (费前)累计实现损益
-                      up: '0', // 持仓未实现盈亏
-                      mt: 'isolated', // 保证金模式
-                      iw: '0.00000000', // 若为逐仓，仓位保证金
-                      ps: 'BOTH', // 持仓方向
-                    },
-                    {
-                      s: 'BTCUSDT',
-                      pa: '20',
-                      ep: '6563.66500',
-                      cr: '0',
-                      up: '2850.21200',
-                      mt: 'isolated',
-                      iw: '13200.70726908',
-                      ps: 'LONG',
-                    },
-                    {
-                      s: 'BTCUSDT',
-                      pa: '-10',
-                      ep: '6563.86000',
-                      cr: '-45.04000000',
-                      up: '-1423.15600',
-                      mt: 'isolated',
-                      iw: '6570.42511771',
-                      ps: 'SHORT',
-                    },
-                  ],
-                },
+        {
+          m: 'ORDER', // 事件推出原因
+          B: [ // 余额信息
+            {
+              a: 'USDT', // 资产名称
+              wb: '122624.12345678', // 钱包余额
+              cw: '100.12345678', // 除去逐仓仓位保证金的钱包余额
+            },
+            {
+              a: 'BNB',
+              wb: '1.00000000',
+              cw: '0.00000000',
+            },
+          ],
+          P: [
+            {
+              s: 'BTCUSDT', // 交易对
+              pa: '0', // 仓位
+              ep: '0.00000', // 入仓价格
+              cr: '200', // (费前)累计实现损益
+              up: '0', // 持仓未实现盈亏
+              mt: 'isolated', // 保证金模式
+              iw: '0.00000000', // 若为逐仓，仓位保证金
+              ps: 'BOTH', // 持仓方向
+            },
+            {
+              s: 'BTCUSDT',
+              pa: '20',
+              ep: '6563.66500',
+              cr: '0',
+              up: '2850.21200',
+              mt: 'isolated',
+              iw: '13200.70726908',
+              ps: 'LONG',
+            },
+            {
+              s: 'BTCUSDT',
+              pa: '-10',
+              ep: '6563.86000',
+              cr: '-45.04000000',
+              up: '-1423.15600',
+              mt: 'isolated',
+              iw: '6570.42511771',
+              ps: 'SHORT',
+            },
+          ],
+        },
       }
       const { a } = toType(sample)(v)
       server.realDB.__(v => v.BUSD).set(Number(a.B.find(v => v.a === 'BUSD')?.cw || 0))
@@ -527,6 +551,7 @@ const init = async () => {
           }
         }
       })
+      刷新仓位和委托()
     }
   }
 }

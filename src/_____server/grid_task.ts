@@ -1,5 +1,5 @@
 import { waitFor } from '../_____lib/func/waitFor'
-import { SYMBOL, XXX_http, XXX_setFunc, XXX_state, orderBook } from './BinanceXXX'
+import { SYMBOL, XXX_http, XXX_state, orderBook } from './BinanceXXX'
 import { server } from './server'
 
 function grid_to_sync_list({
@@ -85,8 +85,7 @@ export async function grid_task() {
 
     if (buy1 !== 0 && sell1 !== 0) {
       if (sell1 < low || buy1 > high) {
-        task参数.a = 0
-        XXX_setFunc.onEnd()
+        server.realDB.__(v => v.dic['BTCBUSD'].运行中).set(false)
         return
       }
     }
@@ -113,13 +112,13 @@ export async function grid_task() {
     const 同步委托 = ({ price, isBuy, is减仓 }: { price: number; isBuy: boolean; is减仓: boolean }) => {
       is减仓 = false
       if (order.some(v => v.price === price
-                && v.type === 'LIMIT'
-                && (v.status === 'NEW' || v.status === 'PARTIALLY_FILLED')
-                && v.isBuy === isBuy
-                && v.只减仓 === is减仓,
+        && v.type === 'LIMIT'
+        && (v.status === 'NEW' || v.status === 'PARTIALLY_FILLED')
+        && v.isBuy === isBuy
+        && v.只减仓 === is减仓,
       ) === false) {
         if ((isBuy && sell1 > price)
-                    || ((!isBuy) && buy1 < price)) {
+          || ((!isBuy) && buy1 < price)) {
           console.log('同步委托', price, isBuy ? 'Buy' : 'Sell', is减仓 ? 'TP' : 'OPEN')
           XXX_http.new_order({
             symbol: SYMBOL,
