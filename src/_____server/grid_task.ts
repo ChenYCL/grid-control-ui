@@ -1,7 +1,7 @@
 import { waitFor } from '../_____lib/func/waitFor'
 import { XXX_http, XXX_state, orderBookDic } from './BinanceXXX'
 import { server } from './server'
-import { 支持的品种T } from './支持的品种'
+import { 支持的品种dic, 支持的品种T } from './支持的品种'
 
 function grid_to_sync_list(symbol: 支持的品种T) {
   const { a, b, count, dx, size } = server.realDB.mutableData.dic[symbol].参数
@@ -129,7 +129,7 @@ export async function grid_task(symbol: 支持的品种T) {
 
         // 同步平仓
         else {
-          同步委托({ price: v.TP - 0.1, isBuy: false, is减仓: true })
+          同步委托({ price: v.TP - 支持的品种dic[symbol].tickSize, isBuy: false, is减仓: true })
         }
       } else if (v.orderType === 'Sell Limit') {
         // 同步开仓
@@ -139,7 +139,7 @@ export async function grid_task(symbol: 支持的品种T) {
 
         // 同步平仓
         else {
-          同步委托({ price: v.TP + 0.1, isBuy: true, is减仓: true })
+          同步委托({ price: v.TP + 支持的品种dic[symbol].tickSize, isBuy: true, is减仓: true })
         }
       }
     })
