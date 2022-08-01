@@ -47,27 +47,30 @@ export const XXX_state = {
 }
 
 const 刷新仓位和委托 = () => {
-  server.realDB.__(v => v.dic['BTCBUSD'].仓位).set({
-    price: XXX_state.positionDic['BTCBUSD']?.price || 0,
-    size: XXX_state.positionDic['BTCBUSD']?.size || 0,
-  })
+  支持的品种arr.forEach(symbol => {
 
-  const arr = Object.values(XXX_state.orderDic['BTCBUSD'] || {}).filter(v => v.type === 'LIMIT')
-    .map(v => {
-      if (v.type === 'LIMIT') {
-        return {
-          price: v.price,
-          size: v.isBuy ? v.size : -v.size,
-        }
-      } else {
-        return {
-          price: 0,
-          size: 0,
-        }
-      }
+    server.realDB.__(v => v.dic[ symbol].仓位).set({
+      price: XXX_state.positionDic[ symbol]?.price || 0,
+      size: XXX_state.positionDic[ symbol]?.size || 0,
     })
 
-  server.realDB.__(v => v.dic['BTCBUSD'].委托).set(arr)
+    const arr = Object.values(XXX_state.orderDic[ symbol] || {}).filter(v => v.type === 'LIMIT')
+      .map(v => {
+        if (v.type === 'LIMIT') {
+          return {
+            price: v.price,
+            size: v.isBuy ? v.size : -v.size,
+          }
+        } else {
+          return {
+            price: 0,
+            size: 0,
+          }
+        }
+      })
+
+    server.realDB.__(v => v.dic[ symbol].委托).set(arr)
+  })
 }
 
 
