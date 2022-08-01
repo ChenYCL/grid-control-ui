@@ -5,6 +5,8 @@ import { WebSocketClientNew } from '../_____lib/http_ws/WebSocketClient'
 import { httpRequest } from '../_____lib/nodejs_lib/httpRequest'
 import { CONST } from './CONST'
 import { server } from './server'
+import { 支持的品种arr, 支持的品种dic, 支持的品种T } from './支持的品种'
+import { mapObjIndexed } from 'ramda'
 
 type OrderStatus = 'NEW' | 'CANCELED' | 'PARTIALLY_FILLED' | 'FILLED'
 
@@ -558,9 +560,9 @@ const init = async () => {
 
 init()
 
-export const SYMBOL = 'BTCBUSD'
 
-export let orderBook = { buy1: 0, sell1: 0 }
+export let orderBookDic = mapObjIndexed(() => ({ buy1: 0, sell1: 0 }), 支持的品种dic)
+
 
 const publicWS = WebSocketClientNew({
   log_tag: 'binance public',
@@ -571,7 +573,7 @@ publicWS.onStatusChange = () => {
   if (publicWS.isConnected) {
     publicWS.sendJSON({
       method: 'SUBSCRIBE',
-      params: [`${SYMBOL.toLowerCase()}@depth5@100ms`],
+      params: 支持的品种arr.map(v => `${v.toLowerCase()}@depth5@100ms`),
       id: 6666,
     })
   }
@@ -582,9 +584,9 @@ publicWS.onRecvJSON = (p) => {
   const type = ((stream || '').split('@')[1] || '').split('_')[0]
 
   if (type === 'depth5') {
-    // const symbol = String(data.s)
+    const symbol = String(data.s) as 支持的品种T
     const buy1 = Number(data.b[0][0])
     const sell1 = Number(data.a[0][0])
-    orderBook = { buy1, sell1 }
+    orderBookDic[symbol] = { buy1, sell1 }
   }
 }

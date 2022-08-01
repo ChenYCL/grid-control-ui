@@ -1,16 +1,10 @@
 import { waitFor } from '../_____lib/func/waitFor'
-import { SYMBOL, XXX_http, XXX_state, orderBook } from './BinanceXXX'
+import { XXX_http, XXX_state, orderBookDic } from './BinanceXXX'
 import { server } from './server'
+import { 支持的品种T } from './支持的品种'
 
-function grid_to_sync_list({
-  a, b, count, dx,
-}: {
-  a: number
-  b: number
-  count: number
-  dx: number
-}) {
-  const task参数 = server.realDB.mutableData.dic.BTCBUSD.参数
+function grid_to_sync_list(symbol: 支持的品种T) {
+  const { a, b, count, dx, size } = server.realDB.mutableData.dic[symbol].参数
 
   const arr: {
     price: number
@@ -36,7 +30,7 @@ function grid_to_sync_list({
       SL: low,
       TP: low_i + one - dx,
       orderType: 'Buy Limit',
-      仓位: task参数.size * (i + 1),
+      仓位: size * (i + 1),
     })
 
     arr.push({
@@ -44,7 +38,7 @@ function grid_to_sync_list({
       SL: high,
       TP: high_i - one + dx,
       orderType: 'Sell Limit',
-      仓位: -task参数.size * (i + 1),
+      仓位: -size * (i + 1),
     })
   }
 
@@ -63,29 +57,24 @@ function grid_to_sync_list({
   }
 }
 
-export async function grid_task() {
+export async function grid_task(symbol: 支持的品种T) {
   while (true) {
-    const 运行中 = server.realDB.mutableData.dic.BTCBUSD.运行中
+    const 运行中 = server.realDB.mutableData.dic[symbol].运行中
     if (运行中 === false) {
       await waitFor(100)
       continue
     }
 
-    const task参数 = server.realDB.mutableData.dic.BTCBUSD.参数
-    const { low, high, list } = grid_to_sync_list({
-      a: task参数.a,
-      b: task参数.b,
-      count: task参数.count,
-      dx: task参数.dx,
-    })
+    const task参数 = server.realDB.mutableData.dic[symbol].参数
+    const { low, high, list } = grid_to_sync_list(symbol)
 
-    const order = Object.values(XXX_state.orderDic[SYMBOL] || {})
-    const { buy1, sell1 } = orderBook
-    const position = XXX_state.positionDic[SYMBOL] || { size: 0, price: 0 }
+    const order = Object.values(XXX_state.orderDic[symbol] || {})
+    const { buy1, sell1 } = orderBookDic[symbol]
+    const position = XXX_state.positionDic[symbol] || { size: 0, price: 0 }
 
     if (buy1 !== 0 && sell1 !== 0) {
       if (sell1 < low || buy1 > high) {
-        server.realDB.__(v => v.dic['BTCBUSD'].运行中).set(false)
+        server.realDB.__(v => v.dic[symbol].运行中).set(false)
         return
       }
     }
@@ -94,7 +83,7 @@ export async function grid_task() {
     if (order.some(v => v.price === low && v.type === 'STOP_MARKET' && v.status === 'NEW') === false) {
       console.log('同步止损 low', low)
       XXX_http.stop_order({
-        symbol: SYMBOL,
+        symbol: symbol,
         price: low,
         isBuy: false,
       })
@@ -103,7 +92,7 @@ export async function grid_task() {
     if (order.some(v => v.price === high && v.type === 'STOP_MARKET' && v.status === 'NEW') === false) {
       console.log('同步止损 high', high)
       XXX_http.stop_order({
-        symbol: SYMBOL,
+        symbol: symbol,
         price: high,
         isBuy: true,
       })
@@ -121,7 +110,7 @@ export async function grid_task() {
           || ((!isBuy) && buy1 < price)) {
           console.log('同步委托', price, isBuy ? 'Buy' : 'Sell', is减仓 ? 'TP' : 'OPEN')
           XXX_http.new_order({
-            symbol: SYMBOL,
+            symbol: symbol,
             isBuy,
             平仓: is减仓,
             price,

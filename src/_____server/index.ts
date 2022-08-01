@@ -2,7 +2,7 @@ import { grid_task } from "./grid_task"
 import { server } from "./server"
 import { 支持的品种arr } from "./支持的品种"
 
-grid_task()
+支持的品种arr.forEach(grid_task)
 
 setInterval(() => {
     server.realDB.__(v => v.time).set(new Date().toLocaleString())
