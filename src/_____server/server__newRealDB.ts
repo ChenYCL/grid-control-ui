@@ -1,11 +1,16 @@
+import { mapObjIndexed } from "ramda";
 import { RealDB } from "../_____lib/RealDB/RealDB";
+import { 支持的品种dic } from "./支持的品种";
 
 export const server__newRealDB = () => new RealDB({
     time: '--',
     BUSD: 0,
-    dic: {
-        BTCBUSD: {
-            委托: [],
+    dic: mapObjIndexed(() => {
+        return {
+            委托: [] as {
+                size: number
+                price: number
+            }[],
             仓位: {
                 size: 0,
                 price: 0,
@@ -19,24 +24,7 @@ export const server__newRealDB = () => new RealDB({
                 dx: 15,
             }
         }
-    } as {
-        [symbol: string]: {
-            委托: {
-                size: number
-                price: number
-            }[],
-            仓位: {
-                size: number
-                price: number
-            },
-            运行中: boolean
-            参数: {
-                a: number
-                b: number
-                count: number
-                size: number
-                dx: number
-            }
-        }
-    }
+    }, 支持的品种dic)
+
+
 })
