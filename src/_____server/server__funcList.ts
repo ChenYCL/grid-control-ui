@@ -1,6 +1,8 @@
+import { 支持的品种T } from "./支持的品种";
+
 export const server__funcList = {
     set: {
-        symbol: 'BTCBUSD',
+        symbol: '' as 支持的品种T,
         参数: {
             a: 1,
             b: 1,
@@ -10,9 +12,9 @@ export const server__funcList = {
         },
     },
     start: {
-        symbol: 'BTCBUSD',
+        symbol: '' as 支持的品种T,
     },
     stop: {
-        symbol: 'BTCBUSD',
+        symbol: '' as 支持的品种T,
     },
 }
