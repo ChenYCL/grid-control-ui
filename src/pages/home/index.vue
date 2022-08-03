@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container mx-auto px-4 sm:px-8">
+    <div class="container mx-auto">
       <div class="py-8">
         <div class="flow-root">
           <h2 class="text-2xl font-semibold leading-tight float-left">
@@ -48,20 +48,24 @@
                   >
                     size/大小
                   </th>
+
+
                   <th
                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider"
                   >
-                    Status/状态
+                    仓位
                   </th>
+
                   <th
                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider"
                   >
                     委托
                   </th>
+
                   <th
                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider"
                   >
-                    仓位
+                    Status/状态
                   </th>
                   <th
                     class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider"
@@ -75,27 +79,30 @@
                   <td class="px-5 py-5 border-b border-gray-200 bg-white  text-center text-sm">
                     {{ key }}
                   </td>
-                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm"  :contenteditable='editKey===key' @input="(e)=>handleInput(e,'a')" :class='editKey===key?"bg-red-200":""'>
                     {{ value['参数'].a }}
                   </td>
-                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm" :contenteditable='editKey===key' @input="(e)=>handleInput(e,'b')" :class='editKey===key?"bg-red-200":""'>
                     {{ value['参数'].b }}
                   </td>
-                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm" :contenteditable='editKey===key' @input="(e)=>handleInput(e,'count')" :class='editKey===key?"bg-red-200":""'>
                     {{ value['参数'].count }}
                   </td>
-                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center ">
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center " :contenteditable='editKey===key' @input="(e)=>handleInput(e,'dx')" :class='editKey===key?"bg-red-200":""'>
                     {{ value['参数'].dx }}
                   </td>
-                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm" :contenteditable='editKey===key' @input="(e)=>handleInput(e,'size')" :class='editKey===key?"bg-red-200":""'>
                     {{ value['参数'].size }}
                   </td>
-                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
-                    {{ JSON.stringify(value['委托']) }}
-                  </td>
+
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
                     {{ JSON.stringify(value['仓位']) }}
                   </td>
+
+                  <td class="px-5 py-5 border-b border-gray-200 bg-white text-center text-sm">
+                    {{ JSON.stringify(value['委托']) }}
+                  </td>
+
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-center  text-sm">
                     <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                       <span aria-hidden class="absolute inset-0 bg-red-200 opacity-50 rounded-full" />
@@ -104,6 +111,7 @@
                       </span>
                     </span>
                   </td>
+
                   <td class="px-5 py-5 border-b border-gray-200 bg-white text-center  text-sm">
                     <span class="relative inline-block px-3 py-1 font-semibold text-red-900 leading-tight">
                       <span aria-hidden class="absolute inset-0" />
@@ -122,8 +130,15 @@
                           src="data:image/png;base64,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"
                         >
                       </span>
+                        <span  class="relative inline-block" >
+                        <!-- 停止开启 -->
+                          <button class='rounded rounded-2xl bg-red-200 p-3.5' @click="() => edit(key,value['参数'])">
+                            {{editKey && key=== editKey? '保存' : '编辑'}}
+                          </button>
+                      </span>
                     </span>
                   </td>
+
                 </tr>
               </tbody>
             </table>
@@ -238,7 +253,15 @@ const data = reactive({
   time: '00:00:00',
   BUSD:0
 })
+const editKey = ref<any>(undefined)
 const visible = ref<boolean>(false)
+const editor = ref<any>({
+    a: 0,
+    b: 0,
+    count: 0,
+    size: 0,
+    dx: 0,
+})
 const params = reactive({
   symbol: '',
   a: 0,
@@ -269,6 +292,10 @@ client.onData.subscribe(() => {
   data.BUSD = client.realDB.mutableData.BUSD
 })
 
+const handleInput = (e,key)=>{
+  editor.value[key] = e.target.innerHTML
+}
+
 const toggle = (bool: boolean) => {
   visible.value = bool
   if (!bool) {
@@ -280,6 +307,39 @@ const toggle = (bool: boolean) => {
     params.dx = 0
   }
   console.log(params)
+}
+
+const edit = (key:string,{a,b,count,size,dx})=>{
+  console.log(88888,editKey.value,editor.value)
+  if(editKey.value==undefined){
+    editKey.value = key
+  }else {
+    console.log('保存',editor.value)
+    editor.value.a && (a = editor.value.a )
+    editor.value.b && (b = editor.value.b )
+    editor.value.count && (count = editor.value.count )
+    editor.value.size && (size = editor.value.size )
+    editor.value.dx && (dx = editor.value.dx )
+    client.func.set({
+      symbol: key,
+      参数: {
+        a,
+        b,
+        count,
+        size,
+        dx,
+      },
+    })
+    editKey.value = undefined;
+    editor.value.a = 0
+    editor.value.b = 0
+    editor.value.count = 0
+    editor.value.size = 0
+    editor.value.dx = 0
+  }
+
+
+  // visible.value = true
 }
 
 const add = () => {
